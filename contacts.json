@@ -1,10 +1,30 @@
 [
-{"id": 1, "nom": "Anna", "email": "anna@example.com", "telefon":
-"123456789"},
-{"id": 2, "nom": "Pere", "email": "pere@example.com", "telefon":
-"987654321"},
-{"id": 2, "nom": "Antoni", "email": "antoni@example.com", "telefon":
-"987654325"},
-{"id": 2, "nom": "Juan", "email": "juan@example.com", "telefon":
-"987654326"}
+  {
+    "id": 1,
+    "nom": "Anna",
+    "email": "anna@example.com",
+    "telefon": "123456789",
+    "dataAddicio": "2025-01-10"
+  },
+  {
+    "id": 2,
+    "nom": "Pere",
+    "email": "pere@example.com",
+    "telefon": "987654321",
+    "dataAddicio": "2025-01-12"
+  },
+  {
+    "id": 3,
+    "nom": "Maria",
+    "email": "maria@example.com",
+    "telefon": "654987321",
+    "dataAddicio": "2025-01-15"
+  },
+  {
+    "id": 4,
+    "nom": "Joan",
+    "email": "joan@example.com",
+    "telefon": "321654987",
+    "dataAddicio": "2025-01-18"
+  }
 ]
