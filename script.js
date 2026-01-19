@@ -10,17 +10,15 @@ let contacteAEliminar = null;
 // FUNCIONS PRINCIPALS - INDEX.HTML
 // ============================================
 
-/**
- * Carrega els contactes del localStorage o del JSON inicial
- */
+
 function carregarContactes() {
-    // Intentar carregar del localStorage
+    
     const contactesGuardats = localStorage.getItem(LOCAL_STORAGE_KEY);
     
     if (contactesGuardats) {
         contactes = JSON.parse(contactesGuardats);
     } else {
-        // Carregar els contactes inicials del JSON (simulat)
+        // Carregar els contactes inicials del JSON
         contactes = [
             { id: 1, nom: "Anna", email: "anna@example.com", telefon: "123456789", dataAddicio: "2025-01-10" },
             { id: 2, nom: "Pere", email: "pere@example.com", telefon: "987654321", dataAddicio: "2025-01-12" },
@@ -33,38 +31,34 @@ function carregarContactes() {
     return contactes;
 }
 
-/**
- * Guarda els contactes al localStorage
- */
+
 function guardarContactes() {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contactes));
 }
 
-/**
- * Mostra tots els contactes a la taula
- */
+
 function mostrarContactes(contactesAMostrar = null) {
     const tbody = document.getElementById('contactsTableBody');
     const contactCount = document.getElementById('contactCount');
     const noContactsMessage = document.getElementById('noContactsMessage');
     
-    if (!tbody) return; // No estem a la pàgina index.html
+    if (!tbody) return; 
     
-    // Netejar la taula
+  
     tbody.innerHTML = '';
     
     const contactesPerMostrar = contactesAMostrar || contactes;
     
-    // Actualitzar comptador
+   
     contactCount.textContent = contactesPerMostrar.length;
     
-    // Mostrar o amagar el missatge de "no hi ha contactes"
+  
     if (contactesPerMostrar.length === 0) {
         noContactsMessage.style.display = 'block';
     } else {
         noContactsMessage.style.display = 'none';
         
-        // Afegir cada contacte a la taula
+        // Afegir contactes a la taula
         contactesPerMostrar.forEach(contacte => {
             const fila = document.createElement('tr');
             
@@ -103,18 +97,14 @@ function mostrarContactes(contactesAMostrar = null) {
     }
 }
 
-/**
- * Formata un número de telèfon
- */
+
 function formatTelefon(telefon) {
     if (!telefon) return '';
-    // Afegir espais cada 3 dígits per millorar la llegibilitat
     return telefon.toString().replace(/(\d{3})(?=\d)/g, '$1 ');
 }
 
-/**
- * Cerca contactes segons el text de cerca
- */
+
+//Cerca contactes segons el text de cerca
 function cercarContactes() {
     const searchInput = document.getElementById('searchInput');
     if (!searchInput) return;
@@ -135,9 +125,9 @@ function cercarContactes() {
     mostrarContactes(contactesFiltrats);
 }
 
-/**
- * Mostra el modal de confirmació d'eliminació
- */
+
+// Mostra confirmació d'eliminació
+
 function mostrarModalEliminacio(id) {
     contacteAEliminar = id;
     const modal = document.getElementById('deleteModal');
@@ -145,10 +135,6 @@ function mostrarModalEliminacio(id) {
         modal.style.display = 'flex';
     }
 }
-
-/**
- * Amaga el modal d'eliminació
- */
 function amagarModalEliminacio() {
     const modal = document.getElementById('deleteModal');
     if (modal) {
@@ -157,9 +143,7 @@ function amagarModalEliminacio() {
     contacteAEliminar = null;
 }
 
-/**
- * Elimina un contacte per ID
- */
+// Elimina un contacte per ID
 function eliminarContacte(id) {
     const index = contactes.findIndex(c => c.id === id);
     
@@ -180,9 +164,9 @@ function eliminarContacte(id) {
 // FUNCIONS PRINCIPALS - DETALL.HTML
 // ============================================
 
-/**
- * Carrega i mostra la informació d'un contacte específic
- */
+
+//Mostra la informació d'un contacte específic
+
 function carregarDetallContacte() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = parseInt(urlParams.get('id'));
@@ -200,7 +184,7 @@ function carregarDetallContacte() {
         return;
     }
     
-    // Actualitzar la interfície amb les dades del contacte
+    // Actualitzar les dades
     document.getElementById('detailName').textContent = contacte.nom;
     document.getElementById('detailId').textContent = contacte.id;
     document.getElementById('detailEmail').textContent = contacte.email;
@@ -209,33 +193,26 @@ function carregarDetallContacte() {
     document.getElementById('detailPhone').href = `tel:${contacte.telefon}`;
     document.getElementById('detailDate').textContent = formatData(contacte.dataAddicio);
     
-    // Amagar missatge de càrrega
     const loadingMessage = document.getElementById('loadingMessage');
     if (loadingMessage) {
         loadingMessage.style.display = 'none';
     }
     
-    // Configurar botó d'editar
     const editBtn = document.getElementById('editBtn');
     if (editBtn) {
         editBtn.href = `afegir.html?edit=${contacte.id}`;
     }
     
-    // Configurar botó d'eliminar
     const deleteBtn = document.getElementById('deleteBtn');
     if (deleteBtn) {
         deleteBtn.addEventListener('click', () => mostrarModalEliminacio(id));
     }
     
-    // Si estem en mode edició, redirigir a la pàgina d'afegir/editar
     if (editMode) {
         window.location.href = `afegir.html?edit=${id}`;
     }
 }
 
-/**
- * Formata una data per mostrar-la bé
- */
 function formatData(dataString) {
     if (!dataString) return 'No especificada';
     
@@ -252,9 +229,8 @@ function formatData(dataString) {
     return data.toLocaleDateString('ca-ES', options);
 }
 
-/**
- * Mostra el missatge d'error quan no es troba el contacte
- */
+
+//Mostra el missatge d'error quan no es troba el contacte
 function mostrarErrorContacte() {
     const loadingMessage = document.getElementById('loadingMessage');
     const errorMessage = document.getElementById('errorMessage');
@@ -269,9 +245,9 @@ function mostrarErrorContacte() {
 // FUNCIONS PRINCIPALS - AFEGIR.HTML
 // ============================================
 
-/**
- * Gestiona el formulari per afegir o editar contactes
- */
+
+// Gestiona el formulari per afegir o editar contactes
+
 function configurarFormulari() {
     const form = document.getElementById('addContactForm');
     if (!form) return;
@@ -281,29 +257,23 @@ function configurarFormulari() {
     let esEdicio = false;
     let contacteAEditar = null;
     
-    // Si estem en mode edició, carregar les dades del contacte
+
     if (editId) {
         esEdicio = true;
         contacteAEditar = contactes.find(c => c.id === parseInt(editId));
         
         if (contacteAEditar) {
-            // Actualitzar el títol de la pàgina
             document.querySelector('h1').innerHTML = '<i class="fas fa-user-edit"></i> Editar Contacte';
-            
-            // Omplir el formulari amb les dades existents
             document.getElementById('name').value = contacteAEditar.nom;
             document.getElementById('email').value = contacteAEditar.email;
             document.getElementById('phone').value = contacteAEditar.telefon;
             
-            // Canviar el text del botó de guardar
             const submitBtn = form.querySelector('button[type="submit"]');
             if (submitBtn) {
                 submitBtn.innerHTML = '<i class="fas fa-save"></i> Actualitzar Contacte';
             }
         }
     }
-    
-    // Configurar el botó de cancel·lar
     const cancelBtn = document.getElementById('cancelBtn');
     if (cancelBtn) {
         cancelBtn.addEventListener('click', () => {
@@ -315,7 +285,6 @@ function configurarFormulari() {
         });
     }
     
-    // Gestionar l'enviament del formulari
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -344,7 +313,6 @@ function configurarFormulari() {
         }
     });
     
-    // Configurar botó per afegir un altre contacte
     const addAnotherBtn = document.getElementById('addAnotherBtn');
     if (addAnotherBtn) {
         addAnotherBtn.addEventListener('click', () => {
@@ -353,9 +321,8 @@ function configurarFormulari() {
     }
 }
 
-/**
- * Genera un nou ID únic per a un contacte
- */
+//Genera un nou ID únic per a un contacte
+
 function generarNouId() {
     if (contactes.length === 0) return 1;
     
@@ -363,9 +330,7 @@ function generarNouId() {
     return maxId + 1;
 }
 
-/**
- * Valida el formulari de contacte
- */
+
 function validarFormulari() {
     let valid = true;
     
@@ -418,9 +383,6 @@ function validarFormulari() {
     return valid;
 }
 
-/**
- * Mostra el missatge d'èxit després d'afegir/editar un contacte
- */
 function mostrarMissatgeExit(esEdicio) {
     const formContainer = document.querySelector('.form-container');
     const successMessage = document.getElementById('successMessage');
@@ -429,7 +391,6 @@ function mostrarMissatgeExit(esEdicio) {
     if (successMessage) {
         successMessage.style.display = 'block';
         
-        // Actualitzar el missatge segons si és edició o addició
         const titol = successMessage.querySelector('h3');
         const missatge = successMessage.querySelector('p');
         
@@ -444,17 +405,13 @@ function mostrarMissatgeExit(esEdicio) {
 // FUNCIONS AUXILIARS I INICIALITZACIÓ
 // ============================================
 
-/**
- * Configura els event listeners comuns
- */
+
 function configurarEventListeners() {
-    // Cerca de contactes (index.html)
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', cercarContactes);
     }
     
-    // Botó per afegir contacte (index.html)
     const addBtn = document.getElementById('addBtn');
     if (addBtn) {
         addBtn.addEventListener('click', () => {
@@ -462,23 +419,18 @@ function configurarEventListeners() {
         });
     }
     
-    // Modal d'eliminació
     const deleteModal = document.getElementById('deleteModal');
     const cancelDeleteBtn = document.getElementById('cancelDelete');
     const confirmDeleteBtn = document.getElementById('confirmDelete');
     
     if (deleteModal && cancelDeleteBtn && confirmDeleteBtn) {
-        // Tancar modal en fer clic fora
         deleteModal.addEventListener('click', (e) => {
             if (e.target === deleteModal) {
                 amagarModalEliminacio();
             }
         });
-        
-        // Botó de cancel·lar eliminació
         cancelDeleteBtn.addEventListener('click', amagarModalEliminacio);
         
-        // Botó de confirmar eliminació
         confirmDeleteBtn.addEventListener('click', () => {
             if (contacteAEliminar) {
                 eliminarContacte(contacteAEliminar);
@@ -487,14 +439,10 @@ function configurarEventListeners() {
     }
 }
 
-/**
- * Funció principal d'inicialització
- */
+
 function init() {
     // Carregar contactes
     carregarContactes();
-    
-    // Configurar event listeners comuns
     configurarEventListeners();
     
     // Executar funcions específiques segons la pàgina
@@ -511,7 +459,6 @@ function init() {
         configurarFormulari();
     }
     
-    // Configurar "enter" per a la cerca
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('keypress', (e) => {
