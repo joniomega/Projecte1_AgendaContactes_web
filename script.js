@@ -17,16 +17,7 @@ function carregarContactes() {
     
     if (contactesGuardats) {
         contactes = JSON.parse(contactesGuardats);
-    } else {
-        // Carregar els contactes inicials del JSON
-        contactes = [
-            { id: 1, nom: "Anna", email: "anna@example.com", telefon: "123456789", dataAddicio: "2025-01-10" },
-            { id: 2, nom: "Pere", email: "pere@example.com", telefon: "987654321", dataAddicio: "2025-01-12" },
-            { id: 3, nom: "Maria", email: "maria@example.com", telefon: "654987321", dataAddicio: "2025-01-15" },
-            { id: 4, nom: "Joan", email: "joan@example.com", telefon: "321654987", dataAddicio: "2025-01-18" }
-        ];
-        guardarContactes();
-    }
+    } 
     
     return contactes;
 }
